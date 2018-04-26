@@ -9,9 +9,9 @@ def random_drop():
     return random.random() <= p
 
 
-def udt_send(sndpkt):
+def udt_send(sndpkt, ip):
     s = socket(AF_INET, SOCK_DGRAM)
-    s.sendto(sndpkt, ('127.0.0.1', 65534))
+    s.sendto(sndpkt, (ip, 65534))
     s.close()
 
 
@@ -31,7 +31,7 @@ def rdt_rcv(port, fName):
         else:
             if seg.notcorrupt and seg.hassequnum(expectedseqnum):
                 f.write(seg.data)
-                udt_send(seg.make_pkt())
+                udt_send(seg.make_pkt(), address[0])
                 expectedseqnum += 1
 
 

@@ -66,7 +66,7 @@ def rdt_rcv():
     global base, nextseqnum, timer
     seg = Segment.Segment()
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.bind(('127.0.0.1', 65534))
+    s.bind((socket.gethostbyname(socket.gethostname()), 65534))
     while True:
         segment, addr = s.recvfrom(65535)
         if segment:
@@ -76,6 +76,8 @@ def rdt_rcv():
                 timer.stop_timer
             else:
                 timer.start_timer
+        if nextseqnum >= len(buffer):
+            break
 
 
 def main():
